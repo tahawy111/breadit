@@ -77,7 +77,7 @@ export default async function layout({
                   <p className="text-gray-500">You created this community</p>
                 </div>
               ) : (
-                <SubscribeLeaveToggle />
+                <SubscribeLeaveToggle subredditId={ subreddit.id } subredditName={subreddit.name} isSubscribed={isSubscribed} />
               )}
             </dl>
           </div>
