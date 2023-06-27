@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ReactNode } from "react";
 import { format } from "date-fns";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/Button";
 
 interface layoutProps {
   children: ReactNode;
@@ -79,6 +81,11 @@ export default async function layout({
               ) : (
                 <SubscribeLeaveToggle subredditId={ subreddit.id } subredditName={subreddit.name} isSubscribed={isSubscribed} />
               )}
+              
+              <Link href={`/r/${slug}/submit`} className={buttonVariants({
+                variant:"outline",
+                className:"w-full mb-6"
+              })}>Create Post</Link>
             </dl>
           </div>
         </div>
