@@ -54,30 +54,30 @@ export default function Editor({ subredditId }: EditorProps) {
               endpoint: "/api/link",
             },
           },
-        },
-        image: {
-          class: ImageTool,
-          config: {
-            uploader: {
-              async uploadByFile(file: File) {
-                // upload to uploadthing
-                const [res] = await uploadFiles([file], "imageUploader");
+          image: {
+            class: ImageTool,
+            config: {
+              uploader: {
+                async uploadByFile(file: File) {
+                  // upload to uploadthing
+                  const [res] = await uploadFiles([file], "imageUploader");
 
-                return {
-                  success: 1,
-                  file: {
-                    url: res.fileUrl,
-                  },
-                };
+                  return {
+                    success: 1,
+                    file: {
+                      url: res.fileUrl,
+                    },
+                  };
+                },
               },
             },
           },
         },
-        list: List,
-        code: Code,
-        inlineCode: InlineCode,
-        table: Table,
-        embed: Embed,
+        // list: List,
+        // code: Code,
+        // inlineCode: InlineCode,
+        // table: Table,
+        // embed: Embed,
       });
     }
   }, []);
