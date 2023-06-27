@@ -95,7 +95,7 @@ model Post {
   authorId String
 
   comments Comment[]
-  Votes    Vote[]
+  votes    Vote[]
 
   @@index([subredditId])
   @@index([authorId])
