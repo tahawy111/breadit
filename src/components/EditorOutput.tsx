@@ -1,3 +1,4 @@
+"use client"
 import dynamic from "next/dynamic";
 import {} from "react";
 import CustomCodeRenderer from "@/components/renderers/CustomCodeRenderer";
