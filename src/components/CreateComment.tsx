@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { CommentRequest } from "@/lib/validators/comment";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
@@ -20,7 +20,7 @@ export default function CreateComment({
 }: CreateCommentProps) {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
-  const inputCommentId = `${Date.now()}`;
+  const inputCommentId = useId()
   const { mutate: comment, isLoading } = useMutation({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId };
@@ -57,7 +57,7 @@ export default function CreateComment({
 
   return (
     <div className="grid w-full gap-1.5">
-        <Label htmlFor={inputCommentId}>Your Comment</Label>
+        <Label className="cursor-pointer" htmlFor={inputCommentId}>Your Comment</Label>
         <div className="mt-2">
           <Textarea
             id={inputCommentId}
