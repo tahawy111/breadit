@@ -97,7 +97,7 @@ export async function PATCH(req: Request) {
     if (error instanceof z.ZodError) {
         return new Response("Invalid request data passed.", { status: 422 });
       }
-      return new Response("Could not do voting, please try again later.", {
+      return new Response("Could not vote, please try again later.", {
         status: 500,
       });
   }
