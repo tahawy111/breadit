@@ -25,11 +25,14 @@ export default function CreateComment({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId };
 
-      const { data } = await axios.patch(
-        `/api/subreddit/post/comment/`,
-        payload
-      );
-      return data;
+      console.log(payload);
+      
+
+      // const { data } = await axios.patch(
+      //   `/api/subreddit/post/comment/`,
+      //   payload
+      // );
+      // return data;
     },
 
     onError: (err) => {

@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { CommentRequest } from "@/lib/validators/comment";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import CommentList from "./CommentList";
 
 type ExtendedComment = Comment & {
   votes: CommentVote[];
@@ -25,6 +26,7 @@ interface PostCommentProps {
   votesAmt: number;
   currentVote: CommentVote | undefined;
   postId: string;
+  comments: ExtendedComment[];
 }
 
 export default function PostComment({
@@ -32,6 +34,7 @@ export default function PostComment({
   votesAmt,
   currentVote,
   postId,
+  comments,
 }: PostCommentProps) {
   const commentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -39,8 +42,9 @@ export default function PostComment({
   const [input, setInput] = useState<string>("");
   const { data: session } = useSession();
   const inputCommentId = useId();
+  const [rootReplyCommentId, setRootReplyCommentId] = useState<string>("")
 
-  const { mutate: postComment, isLoading } = useMutation({
+  const { mutate: reply, isLoading } = useMutation({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId };
 
@@ -63,6 +67,11 @@ export default function PostComment({
       setIsReplying(false);
     },
   });
+
+  const childComments = comments.filter((cm) => cm.replyToId === comment.id);
+
+  
+  
   return (
     <div ref={commentRef} className="flex flex-col">
       <div className="flex items-center">
@@ -97,6 +106,7 @@ export default function PostComment({
           onClick={() => {
             if (!session) return router.push("/sign-in");
             setIsReplying(true);
+            setRootReplyCommentId(comment.id)
           }}
           variant={"ghost"}
           size={"xs"}
@@ -123,10 +133,10 @@ export default function PostComment({
                 <Button
                   onClick={() => {
                     if (!input) return;
-                    postComment({
+                    reply({
                       postId,
                       text: input,
-                      replyToId: comment.replyToId ?? comment.id,
+                      replyToId: rootReplyCommentId && rootReplyCommentId,
                     });
                   }}
                   isLoading={isLoading}
@@ -135,8 +145,8 @@ export default function PostComment({
                   Post
                 </Button>
                 <Button
-                className="mx-2"
-                variant={"subtle"}
+                  className="mx-2"
+                  variant={"subtle"}
                   onClick={() => setIsReplying(false)}
                 >
                   Cancel
@@ -145,6 +155,10 @@ export default function PostComment({
             </div>
           </div>
         )}
+      </div>
+      <div className="ml-10 py-3 pl-10">
+        {/* @ts-expect-error server component */}
+        <CommentList comments={childComments} postId={postId} allComments={comments} />
       </div>
     </div>
   );
