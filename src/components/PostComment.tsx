@@ -5,7 +5,7 @@ import { Comment, CommentVote, User, VoteType } from "@prisma/client";
 import { formatTimeToNow } from "@/lib/utils";
 import CommentVotes from "./CommentVotes";
 import { Button } from "./ui/Button";
-import { MessageSquare } from "lucide-react";
+import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Label } from "./ui/Label";
@@ -42,8 +42,8 @@ export default function PostComment({
   const [input, setInput] = useState<string>("");
   const { data: session } = useSession();
   const inputCommentId = useId();
-  const [rootReplyCommentId, setRootReplyCommentId] = useState<string>("")
-
+  const [rootReplyCommentId, setRootReplyCommentId] = useState<string>("");
+  const [showReplies, setShowReplies] = useState<boolean>(false);
   const { mutate: reply, isLoading } = useMutation({
     mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
       const payload: CommentRequest = { postId, text, replyToId };
@@ -65,13 +65,12 @@ export default function PostComment({
     onSuccess: () => {
       router.refresh();
       setIsReplying(false);
+      setShowReplies(true)
     },
   });
 
   const childComments = comments.filter((cm) => cm.replyToId === comment.id);
 
-  
-  
   return (
     <div ref={commentRef} className="flex flex-col">
       <div className="flex items-center">
@@ -106,7 +105,7 @@ export default function PostComment({
           onClick={() => {
             if (!session) return router.push("/sign-in");
             setIsReplying(true);
-            setRootReplyCommentId(comment.id)
+            setRootReplyCommentId(comment.id);
           }}
           variant={"ghost"}
           size={"xs"}
@@ -114,6 +113,16 @@ export default function PostComment({
           <MessageSquare className="h-4 w-4 mr-1.5" />
           Reply
         </Button>
+        {childComments.length > 0 && (
+          <Button
+            onClick={() => setShowReplies((prev) => !prev)}
+            variant={"ghost"}
+            size={"xs"}
+          >
+            {showReplies ? <ChevronUp /> : <ChevronDown />}
+            Show Replies
+          </Button>
+        )}
 
         {isReplying && (
           <div className="grid w-full gap-1.5">
@@ -156,10 +165,16 @@ export default function PostComment({
           </div>
         )}
       </div>
-      <div className="ml-10 py-3 pl-10">
-        {/* @ts-expect-error server component */}
-        <CommentList comments={childComments} postId={postId} allComments={comments} />
-      </div>
+      {childComments.length > 0 && showReplies && (
+        <div className="ml-2 py-2 my-2 pl-4 border-l-2 border-zinc-200">
+          {/* @ts-expect-error server component */}
+          <CommentList
+            comments={childComments}
+            postId={postId}
+            allComments={comments}
+          />
+        </div>
+      )}
     </div>
   );
 }
