@@ -15,14 +15,14 @@ export async function POST(req: Request) {
     const { name } = SubredditValidator.parse(body);
 
     // check if subreddit already exists
-    const subredditExists = await db.subreddit.findFirst({ where: { name } });
+    const subredditExists = await db.subreddit.findFirst({ where: { name:name.trim() } });
 
     if (subredditExists) {
       return new Response("Subreddit Already exists.", { status: 409 });
     }
 
     const subreddit = await db.subreddit.create({
-      data: { name, creatorId: session.user.id },
+      data: { name:name.trim(), creatorId: session.user.id },
     });
 
     await db.subscription.create({
