@@ -7,10 +7,9 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { CreateSubredditPayload } from "@/lib/validators/subreddit";
-import { ZodError } from "zod";
 import { toast } from "@/hooks/use-toast";
 
-export default function page() {
+export default function Page() {
     const [input, setInput] = useState<string>("");
     const router = useRouter();
     const { mutate: createCommunity, isLoading, } = useMutation({

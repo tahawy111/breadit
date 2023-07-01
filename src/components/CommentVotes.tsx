@@ -24,7 +24,7 @@ export default function CommentVotes({
   // toast()
   const [votesAmt, setVotesAmt] = useState<number>(initialVoteAmt);
   const [currentVote, setCurrentVote] = useState(initialVote);
-  const prevVote = usePrevious(currentVote);
+  // const prevVote = usePrevious(currentVote);
 
   useEffect(() => {
     setCurrentVote(initialVote);
@@ -39,7 +39,7 @@ export default function CommentVotes({
 
       await axios.patch(`/api/subreddit/post/comment/vote`, payload);
     },
-    onError: (err, voteType) => {
+    onError: (err, _voteType) => {
       // if (voteType === "UP") setVotesAmt((prev) => prev - 1);
       // else setVotesAmt((prev) => prev + 1);
 

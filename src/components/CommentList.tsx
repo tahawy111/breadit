@@ -2,7 +2,6 @@
 import { Comment, CommentVote, User } from "@prisma/client";
 import {} from "react";
 import PostComment from "./PostComment";
-import { getAuthSession } from "@/lib/auth";
 import { useSession } from "next-auth/react";
 
 type ExtendedComment = Comment & {

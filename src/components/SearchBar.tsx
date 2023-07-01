@@ -8,7 +8,7 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/Command";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Prisma, Subreddit } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,6 @@ export default function SearchBar({}: SearchBarProps) {
     data: queryResults,
     refetch,
     isFetched,
-    isFetching,
   } = useQuery({
     queryFn: async () => {
       if (!input) return [];
@@ -44,7 +43,7 @@ export default function SearchBar({}: SearchBarProps) {
 
   const debounceRequest = useCallback(() => {
     request();
-  }, []);
+  }, [request]);
 
   return (
     <Command className="relative rounded-lg border max-w-lg z-50 overflow-visible">

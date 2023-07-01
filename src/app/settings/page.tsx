@@ -17,9 +17,6 @@ export default async function page({}: routeProps) {
     redirect(authOptions.pages?.signIn || "/sign-in");
   }
 
-  console.log(session);
-  
-
   return (
     <div className="max-w-4xl mx-auto py-12">
       <div className="grid items-start gap-8 py-1">

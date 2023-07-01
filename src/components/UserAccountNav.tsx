@@ -45,7 +45,7 @@ export default function UserAccountNav({ user }: UserAccountNavProps) {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={ (e) => {
+                <DropdownMenuItem onClick={ () => {
                     signOut().then(() => {
                         router.push('/sign-in')
                     })
