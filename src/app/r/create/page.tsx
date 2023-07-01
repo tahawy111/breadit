@@ -14,6 +14,10 @@ export default function Page() {
     const router = useRouter();
     const { mutate: createCommunity, isLoading, } = useMutation({
         mutationFn: async () => {
+            if(input.includes(" ")) return toast({
+                title:"Community name should not has a whitespaces",
+                description:"Please remove a whitespaces and try again."
+            })
             const payload: CreateSubredditPayload = {
                 name: input
             };
