@@ -42,12 +42,12 @@ export default function Post({
           <div className="max-h-40 mt-1 text-xs text-gray-500">
             {subredditName && (
               <>
-                <a
+                <Link
                   className="underline text-zinc-900 text-sm underline-offset-2"
                   href={`/r/${subredditName}`}
                 >
                   r/{subredditName}
-                </a>
+                </Link>
                 <span className="px-1">•</span>
               </>
             )}
